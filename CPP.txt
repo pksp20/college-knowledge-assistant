@@ -1,0 +1,219 @@
+PYTHON BASICS: A BEGINNER'S GUIDE
+=================================
+
+Python is a general-purpose programming language used for automation, websites, data analysis, AI, and more. This guide covers the core ideas to get started.
+
+1. RUN PYTHON
+-------------
+Save code in a file ending in .py, such as hello.py, then run it with Python:
+
+    python hello.py
+
+You can also type code into an interactive Python prompt.
+
+    print("Hello, world!")
+
+2. VALUES AND VARIABLES
+-----------------------
+A variable is a name that refers to a value. You do not need to declare its type first.
+
+    name = "Maya"       # str: text
+    age = 20             # int: whole number
+    height = 1.65        # float: decimal
+    is_student = True    # bool: True or False
+    nothing = None       # represents no value
+
+Use type() to check a value's type:
+
+    print(type(age))  # <class 'int'>
+
+Variable names are case-sensitive. Use descriptive snake_case names.
+
+3. BASIC OPERATORS
+------------------
+Arithmetic operators:
+
+    a + b   # addition
+    a - b   # subtraction
+    a * b   # multiplication
+    a / b   # division; produces a float
+    a // b  # floor division
+    a % b   # remainder
+    a ** b  # exponentiation
+
+Compare values with ==, !=, <, >, <=, and >=. Comparisons produce True or False.
+
+    5 == 5          # True
+    "cat" != "dog"  # True
+
+Use and, or, and not to combine conditions. Use in to check membership:
+
+    3 in [1, 2, 3]  # True
+
+4. TEXT AND STRINGS
+-------------------
+Strings can use single or double quotes. Combine them with +, or use an f-string to insert values:
+
+    first_name = "Maya"
+    age = 20
+    greeting = f"Hi, {first_name}. You are {age}."
+
+Useful string operations:
+
+    "python".upper()         # "PYTHON"
+    "  hello  ".strip()      # "hello"
+    "red,blue".split(",")    # ["red", "blue"]
+    "-".join(["a", "b"])     # "a-b"
+
+Strings are immutable: operations return a new string rather than changing the original.
+
+5. COLLECTIONS
+--------------
+Lists: ordered and changeable.
+
+    colors = ["red", "green", "blue"]
+    colors[0]          # "red" (indexes start at 0)
+    colors[-1]         # "blue" (last item)
+    colors.append("gold")
+    colors[1] = "teal"
+    colors[0:2]        # ["red", "teal"] (slice end is excluded)
+
+Tuples: ordered and fixed.
+
+    point = (4, 7)
+    x, y = point  # unpacking
+
+Dictionaries: key-value pairs.
+
+    person = {"name": "Maya", "age": 20}
+    person["name"]        # "Maya"
+    person["city"] = "Pune"
+    person.get("job")     # None if missing
+
+Sets: unique items.
+
+    tags = {"python", "beginner", "python"}
+    # duplicates are removed
+
+6. CONDITIONS
+-------------
+Indentation defines which statements belong to a block. Use four spaces per level.
+
+    score = 82
+
+    if score >= 90:
+        print("A")
+    elif score >= 70:
+        print("Passing")
+    else:
+        print("Keep practicing")
+
+7. LOOPS
+--------
+A for loop iterates over items:
+
+    for color in colors:
+        print(color)
+
+    for number in range(5):  # 0 through 4
+        print(number)
+
+A while loop runs while a condition is true:
+
+    count = 0
+    while count < 3:
+        print(count)
+        count += 1
+
+Use break to exit a loop and continue to skip to the next iteration.
+
+8. FUNCTIONS
+------------
+Functions package reusable instructions. Parameters are inputs; return sends a result back.
+
+    def add(a, b):
+        return a + b
+
+    total = add(3, 4)
+
+You can set a default parameter:
+
+    def greet(name, greeting="Hello"):
+        return f"{greeting}, {name}!"
+
+9. ERRORS AND EXCEPTIONS
+------------------------
+Handle expected exceptions with try and except:
+
+    try:
+        number = int("not a number")
+    except ValueError:
+        print("Please provide a valid number.")
+
+Use raise when your code needs to report an error:
+
+    if age < 0:
+        raise ValueError("Age cannot be negative")
+
+10. FILES
+---------
+Use with so Python closes the file automatically:
+
+    with open("notes.txt", "w", encoding="utf-8") as file:
+        file.write("Hello!\n")
+
+    with open("notes.txt", "r", encoding="utf-8") as file:
+        contents = file.read()
+
+Modes include "r" for reading, "w" for replacing or creating, and "a" for appending.
+
+11. MODULES AND PACKAGES
+------------------------
+A module is a Python file you can import. The standard library includes modules such as math, random, and pathlib.
+
+    import math
+    print(math.sqrt(16))
+
+Install third-party packages with pip:
+
+    python -m pip install requests
+
+Then import them in code:
+
+    import requests
+
+A virtual environment keeps a project's packages separate:
+
+    python -m venv .venv
+
+12. CLASSES AND OBJECTS
+-----------------------
+A class describes a kind of object. An object stores data and can have methods.
+
+    class Dog:
+        def __init__(self, name):
+            self.name = name
+
+        def speak(self):
+            return f"{self.name} says woof"
+
+    dog = Dog("Pip")
+    print(dog.speak())
+
+13. COMPREHENSIONS
+------------------
+A compact way to build a collection from another iterable:
+
+    squares = [number ** 2 for number in range(5)]
+    evens = [number for number in range(10) if number % 2 == 0]
+
+14. HELPFUL HABITS
+------------------
+- Use clear names and consistent indentation.
+- Break longer tasks into functions.
+- Read error messages from the bottom up; they usually show the failing line.
+- Add comments to explain why something is done when the code is not obvious.
+- Test small pieces of code as you build.
+- Learn the Python standard library before adding packages.
+
+A good next step is to write a small program that uses variables, conditions, loops, functions, and a list, such as a simple quiz or to-do list.

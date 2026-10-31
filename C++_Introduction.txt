@@ -1,0 +1,162 @@
+C++ ADVANCED COURSE CHATBOT DATASET
+Format: question/answer pairs in plain text
+
+[01] Topic: Modern C++ and language standards
+Q: What changed in C++ compared with C?
+A: C++ adds abstraction and type-system features such as classes, templates, exceptions, references, operator overloading, and the standard library. Modern C++ also emphasizes RAII, value semantics, generic programming, and safer resource management. C++ remains compatible with much C code, but the languages are not identical.
+
+[02] Topic: Value categories
+Q: Explain lvalues, xvalues, and prvalues.
+A: An lvalue identifies an object with a persistent identity. An xvalue is an expiring object whose resources may be reused, commonly produced by std::move. A prvalue is a pure value used to initialize an object or compute a result. These categories determine which references bind and whether move operations may be selected.
+
+[03] Topic: Move semantics
+Q: What does std::move do?
+A: std::move is a cast that converts its argument to an rvalue reference type. It does not move anything by itself. A move constructor or move assignment operator may then be selected and transfer resources. The source object remains valid, but its value is generally unspecified unless the type documents more.
+
+[04] Topic: Forwarding references
+Q: What is a forwarding reference and how does std::forward work?
+A: In a deduced template parameter context, T&& can be a forwarding reference. When passed an lvalue, T may deduce as T&, and reference collapsing preserves the lvalue. When passed an rvalue, T deduces as a non-reference. std::forward<T>(value) conditionally casts back to the original value category. Use it to forward arguments from generic wrappers.
+
+[05] Topic: RAII
+Q: What is RAII and why is it central to C++?
+A: Resource Acquisition Is Initialization ties a resource's lifetime to an object's lifetime. Constructors acquire resources and destructors release them, so scope exit and exception unwinding perform cleanup automatically. Smart pointers, lock guards, file wrappers, and containers are common RAII types.
+
+[06] Topic: Smart pointers
+Q: When should I use unique_ptr, shared_ptr, or weak_ptr?
+A: Use std::unique_ptr for exclusive ownership and transfer it with moves. Use std::shared_ptr only when ownership is genuinely shared and the final owner should control destruction. Use std::weak_ptr to observe a shared object without extending its lifetime, especially to break shared_ptr cycles. Prefer references or raw pointers for non-owning access when lifetime is otherwise clear.
+
+[07] Topic: Exception safety
+Q: What are the basic, strong, and no-throw exception guarantees?
+A: The basic guarantee means invariants remain valid and resources do not leak, though state may change. The strong guarantee means an operation either succeeds or has no observable effect. The no-throw guarantee means the operation will not propagate an exception. RAII and commit-after-success patterns help provide these guarantees.
+
+[08] Topic: Templates
+Q: What is template instantiation?
+A: Template instantiation is the compiler's creation of a concrete specialization from a template and a set of template arguments. Instantiation may be implicit when the specialization is used or explicit in source code. Definitions generally need to be visible where implicit instantiation occurs, which is why template implementations are commonly placed in headers.
+
+[09] Topic: Concepts
+Q: What are C++20 concepts?
+A: Concepts are named compile-time predicates that constrain template arguments. They make requirements explicit, improve overload selection, and often produce clearer diagnostics than unconstrained substitution failures. A concept does not replace runtime validation; it checks properties expressible at compile time.
+
+[10] Topic: SFINAE
+Q: What does SFINAE mean?
+A: SFINAE means Substitution Failure Is Not An Error. During template substitution, if a candidate's dependent declaration becomes invalid, that candidate can be removed from overload resolution instead of causing an immediate hard error. C++20 concepts are often a clearer way to express these constraints.
+
+[11] Topic: Const correctness
+Q: What does const correctness mean?
+A: Const correctness means using const to express that an object or view should not be modified through a given access path. It documents intent, enables safer interfaces, and allows const objects to call const member functions. const does not automatically make an object deeply immutable if it contains pointers or mutable members.
+
+[12] Topic: Object lifetime
+Q: What is object lifetime and why does it matter?
+A: An object's lifetime is the period during which the object exists as a valid instance of its type. Accessing an object outside its lifetime, or using a pointer after destruction, can cause undefined behavior. C++ lifetime rules also affect placement construction, unions, temporaries, and storage reuse.
+
+[13] Topic: Undefined behavior
+Q: What is undefined behavior?
+A: Undefined behavior is an operation for which the C++ standard imposes no requirements. Examples include signed integer overflow, out-of-bounds access, data races, and using a dangling pointer. Once undefined behavior occurs, a program's results cannot be relied upon. Sanitizers and careful design can help detect common cases.
+
+[14] Topic: The memory model
+Q: What is a data race in C++?
+A: A data race occurs when two threads access the same memory location concurrently, at least one access is a write, and the accesses are not properly synchronized. A data race causes undefined behavior. Use mutexes, atomics, or another documented synchronization mechanism to establish safe access.
+
+[15] Topic: Atomics
+Q: What does memory_order_relaxed guarantee?
+A: A relaxed atomic operation guarantees atomicity and a single modification order for that atomic object, but it does not establish synchronization or ordering for unrelated memory. It is useful for counters when only the numeric atomicity matters. Choose memory ordering based on a proven synchronization design.
+
+[16] Topic: Mutexes
+Q: Why use std::lock_guard or std::scoped_lock instead of manually locking a mutex?
+A: These scope-bound guards unlock the mutex automatically when control leaves the scope, including during exception unwinding. std::lock_guard handles a single mutex simply. std::scoped_lock can lock multiple mutexes using a deadlock-avoidance algorithm. Keep protected regions small and document what each mutex protects.
+
+[17] Topic: Containers
+Q: What invalidates iterators in std::vector?
+A: Reallocation invalidates all pointers, references, and iterators into the vector. Insertions and erasures without reallocation still invalidate elements at or after the affected position. Operations that only change elements without changing storage generally preserve iterators, but consult the specific operation's guarantees.
+
+[18] Topic: Associative containers
+Q: When should I choose std::map versus std::unordered_map?
+A: Choose std::map for sorted key order, predictable logarithmic operations, or range queries. Choose std::unordered_map for average constant-time lookup when ordering is unnecessary and a suitable hash is available. Hash operations can degrade in the worst case, and iteration order is not a stable ordering contract.
+
+[19] Topic: Algorithms
+Q: Why prefer standard algorithms over handwritten loops?
+A: Standard algorithms express intent, compose with iterators and ranges, and are well understood by tools and reviewers. They reduce common indexing mistakes and can use optimized implementations. A loop is still appropriate when it makes control flow substantially clearer or when the task does not map naturally to an algorithm.
+
+[20] Topic: Ranges
+Q: What are C++20 ranges?
+A: Ranges provide a composable way to work with sequences using views, range-aware algorithms, and pipelines. Views are often lazy and non-owning, so the underlying range must outlive their use. Be careful with temporaries and iterator invalidation when storing or returning views.
+
+[21] Topic: Type deduction
+Q: How do auto and decltype(auto) differ?
+A: auto generally deduces a value type and drops top-level references and cv-qualifiers, much like template argument deduction. decltype(auto) uses decltype rules and can preserve references when the initializer is an expression that yields a reference. Use decltype(auto) deliberately in forwarding wrappers and return statements to avoid accidentally changing value category.
+
+[22] Topic: Operator overloading
+Q: What are good rules for operator overloading?
+A: Give an overloaded operator behavior that matches the expectations for that operator and the type. Preserve useful algebraic properties, avoid surprising side effects, and provide consistent constness and return types. Do not overload operators merely to create unusual syntax when a named function would be clearer.
+
+[23] Topic: Virtual functions
+Q: What is the purpose of a virtual destructor?
+A: A base class intended for deletion through a base pointer should have a public virtual destructor so destruction dispatches to the derived type. If deletion through the base interface is forbidden, a protected non-virtual destructor can express that. Polymorphic base classes usually need a virtual destructor.
+
+[24] Topic: Inheritance
+Q: When should composition be preferred over inheritance?
+A: Prefer composition when one type uses another type's behavior without being a true substitutable subtype. Composition limits coupling, makes dependencies explicit, and allows behavior to be assembled flexibly. Use public inheritance when the derived type can safely satisfy the base type's contract.
+
+[25] Topic: Linkage and the ODR
+Q: What is the One Definition Rule?
+A: The One Definition Rule (ODR) requires entities such as functions and types to have permitted definitions across a program. Violations can produce compile or link errors, but some are ill-formed with no diagnostic required. Header definitions of non-template free functions generally need inline or internal linkage to avoid multiple definitions.
+
+[26] Topic: Modules
+Q: What problem do C++20 modules address?
+A: Modules provide explicit importable interfaces and can reduce repeated parsing and macro leakage associated with textual inclusion. They change how declarations are provided to consumers but do not eliminate the need to design stable interfaces or manage build dependencies. Compiler and build-system support can vary by toolchain.
+
+[27] Topic: constexpr
+Q: What does constexpr mean?
+A: constexpr permits a function or object to participate in constant evaluation when its inputs and context allow it. A constexpr function can also execute at runtime. The keyword does not guarantee that every call is evaluated at compile time; consteval is used for functions that must be evaluated during compilation.
+
+[28] Topic: Coroutines
+Q: What are C++ coroutines?
+A: C++ coroutines are functions that can suspend and later resume, using keywords such as co_await, co_yield, and co_return. The language provides coroutine machinery, while a promise type and library abstraction define the behavior and lifetime model. Coroutines do not automatically create threads.
+
+[29] Topic: Performance
+Q: How should I optimize a C++ program?
+A: First measure representative workloads with a profiler. Identify the dominant cost, make a focused change, and measure again. Prefer clear designs and efficient algorithms before low-level tuning. Avoid assuming that a micro-optimization helps without evidence from the target compiler and hardware.
+
+[30] Topic: API design
+Q: How should a C++ function express ownership?
+A: Use a value parameter when the function needs its own copy or can efficiently take ownership. Use T&& when accepting and potentially consuming an rvalue, often in a generic forwarding interface. Use T& or const T& for non-owning access when appropriate. Use smart pointer parameters when shared or exclusive ownership transfer is part of the contract.
+
+[31] Topic: Error handling
+Q: When should I use exceptions versus error return values?
+A: Use exceptions for failures that prevent an operation from fulfilling its contract and that callers can handle at a suitable boundary. Use return values or expected-like types when failure is routine, locally inspected, or part of normal control flow. Keep resource cleanup automatic with RAII in either design.
+
+[32] Topic: Initialization
+Q: What is the difference between copy initialization and direct initialization?
+A: Copy initialization uses forms such as T value = expression; direct initialization uses forms such as T value(expression); or T value{expression};. They can differ in which constructors are considered and whether explicit constructors are permitted. Braced initialization also rejects many narrowing conversions, though it has special rules such as initializer_list preference.
+
+[33] Topic: std::string_view
+Q: What is the main lifetime hazard of std::string_view?
+A: std::string_view does not own characters; it only refers to existing character storage. If that storage is destroyed, moved, or reallocated, the view may dangle. Return or store a string_view only when the referenced data is guaranteed to outlive every use.
+
+[34] Topic: std::span
+Q: What does std::span provide?
+A: std::span is a non-owning view over a contiguous sequence. It carries a pointer and a size, making it convenient for APIs that accept arrays, vectors, or other contiguous storage. Like string_view, it does not extend the storage lifetime and can dangle if the underlying sequence expires.
+
+[35] Topic: Undefined behavior and casts
+Q: Why can reinterpret_cast be dangerous?
+A: reinterpret_cast can convert between certain pointer and integer types, but it does not make an object of a different type exist or make an invalid access legal. Dereferencing a cast pointer can violate alignment, lifetime, or aliasing rules. Prefer typed interfaces, std::bit_cast for supported representation copies, or memcpy where appropriate.
+
+[36] Topic: Build and portability
+Q: Why should a project specify its C++ standard explicitly?
+A: Setting the required language standard makes compiler expectations clear and helps prevent accidental reliance on toolchain defaults. It also lets build systems configure consistent flags and report unsupported features. Portability still depends on compiler support, libraries, and platform-specific code.
+
+[37] Topic: Testing and diagnostics
+Q: Which tools help find C++ bugs?
+A: Compiler warnings catch many suspicious constructs. AddressSanitizer detects many memory errors, UndefinedBehaviorSanitizer detects many forms of undefined behavior, and ThreadSanitizer can detect data races. Static analysis, unit tests, fuzzing, and profiling each cover different risks; none proves a program correct.
+
+[38] Topic: Best practices
+Q: What is the Rule of Zero?
+A: The Rule of Zero says that most classes should not manually define or manage special member functions. Compose members that already manage their own resources, such as standard containers and smart pointers. This reduces bugs in copying, moving, and destruction. Define special members only when the type truly owns a resource requiring custom behavior.
+
+[39] Topic: Best practices
+Q: What is the Rule of Five?
+A: If a class directly manages a resource and must define or delete one of the destructor, copy constructor, copy assignment operator, move constructor, or move assignment operator, consider all five. The goal is to make ownership and copying behavior consistent. Prefer the Rule of Zero when standard RAII members can manage the resource.
+
+[40] Topic: Chatbot response guidance
+Q: How should the chatbot answer when a C++ question depends on the language version?
+A: State the version assumption, such as C++17 or C++20, and explain any relevant version difference. If the user's version is unknown, give a concise answer that flags the dependency and ask which compiler or standard they use only when it changes the recommendation.
