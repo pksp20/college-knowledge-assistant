@@ -12,3 +12,7 @@ streamlit
 langchain-community
 langchain-ollama
 ollama
+streamlit
+langchain-community
+langchain-ollama
+ollama
