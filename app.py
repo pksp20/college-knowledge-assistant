@@ -2,7 +2,9 @@ from langchain_community.llms import Ollama
 import streamlit as st
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser, StructuredOutputParser
+from langchain_ollama import OllamaLLM
 
+llm = OllamaLLM(model="gemma2:2b")
 #Creating my prompts
 prompt = ChatPromptTemplate.from_messages(
     [
